@@ -1,13 +1,14 @@
 """
 models.py
 """
+
 # 自动生成__init__, __repr__, __eq__等方法的装饰器
 # field用于设置默认工厂, 比如list, dict等可变类型的默认值
 from dataclasses import dataclass, field
-
 from datetime import datetime
+
 # Literal用于定义一个变量只能取特定的值, 例如状态码等
-from typing import Literal, Optional
+from typing import Literal
 
 # 状态类型
 Status = Literal["todo", "in_progress", "done"]
@@ -26,11 +27,12 @@ class TodoItem:
 
     这个类只负责"数据结构表达", 不包含任何业务逻辑
     """
-    id: int # 唯一标识符
-    title: str # 标题
-    description: str = "" # 描述, 可选
-    status: Status = "todo" # 状态, 默认为"todo"
-    priority: Priority = "medium" # 优先级, 默认为"medium"
+
+    id: int  # 唯一标识符
+    title: str  # 标题
+    description: str = ""  # 描述, 可选
+    status: Status = "todo"  # 状态, 默认为"todo"
+    priority: Priority = "medium"  # 优先级, 默认为"medium"
 
     # 创建时间
     created_at: str = field(default_factory=now_iso)
@@ -39,7 +41,7 @@ class TodoItem:
     updated_at: str = field(default_factory=now_iso)
 
     # 截止时间
-    due_date: Optional[str] = None
+    due_date: str | None = None
 
     # tags
     tags: list[str] = field(default_factory=list)
@@ -70,13 +72,13 @@ class TodoItem:
         - 用 str/list 做基本类型兜底
         """
         return cls(
-            id = int(data.get("id", 0)),
-            title = str(data.get("title", "")),
-            description = str(data.get("description", "")),
-            status = str(data.get("status", "todo")),
-            priority = str(data.get("priority", "medium")),
-            created_at = str(data.get("created_at", now_iso())),
-            updated_at = str(data.get("updated_at", now_iso())),
-            due_date = str(data.get("due_date", "")) if data.get("due_date") else None,
-            tags = list(data.get("tags", [])),
+            id=int(data.get("id", 0)),
+            title=str(data.get("title", "")),
+            description=str(data.get("description", "")),
+            status=str(data.get("status", "todo")),
+            priority=str(data.get("priority", "medium")),
+            created_at=str(data.get("created_at", now_iso())),
+            updated_at=str(data.get("updated_at", now_iso())),
+            due_date=str(data.get("due_date", "")) if data.get("due_date") else None,
+            tags=list(data.get("tags", [])),
         )
